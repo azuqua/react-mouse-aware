@@ -1,6 +1,6 @@
 # react-mouseAware
 
-A tiny higher order component to track mouse state on a component.
+A tiny decorator to track mouse state on a component.
 
 ### Example
 ```js
