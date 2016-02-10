@@ -1,0 +1,10 @@
+node_modules
+scripts
+src
+test
+
+.babelrc
+.eslintrc
+.gitignore
+.travis.yml
+CONTRIBUTING
