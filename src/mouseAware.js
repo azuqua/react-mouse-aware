@@ -26,8 +26,8 @@ export const mouseAware = ({
             if (this.timeout) clearTimeout(this.timeout);
         }
 
-        onEnter = (evt) => {
-            if (this.props[inHandler]) this.props[inHandler](evt);
+        onEnter = (...args) => {
+            if (this.props[inHandler]) this.props[inHandler](...args);
             if (this.timeout) clearTimeout(this.timeout);
 
             const commit = () => {
@@ -42,8 +42,8 @@ export const mouseAware = ({
             }
         };
 
-        onLeave = (evt) => {
-            if (this.props[outHandler]) this.props[outHandler](evt);
+        onLeave = (...args) => {
+            if (this.props[outHandler]) this.props[outHandler](...args);
             if (this.timeout) clearTimeout(this.timeout);
 
             const commit = () => {

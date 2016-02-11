@@ -125,10 +125,11 @@ describe('mouseAware Component', function() {
 
     it('should allow name collisions of "inHandler" property name', function() {
         const Test = mouseAware()(_Test);
+        const a = {}, b = {};
         const spy = sinon.spy();
         TestUtils.renderIntoDocument(<Test onMouseEnter={spy} />);
-        props.onMouseEnter();
-        expect(spy).to.be.called;
+        props.onMouseEnter(a, b);
+        expect(spy).to.be.calledWith(a, b);
         expect(props.isOver).to.be.true;
     });
 
@@ -142,10 +143,11 @@ describe('mouseAware Component', function() {
 
     it('should allow name collisions of "outHandler" property name', function() {
         const Test = mouseAware()(_Test);
+        const a = {}, b = {};
         const spy = sinon.spy();
         TestUtils.renderIntoDocument(<Test onMouseLeave={spy} />);
-        props.onMouseLeave();
-        expect(spy).to.be.called;
+        props.onMouseLeave(a, b);
+        expect(spy).to.be.calledWith(a, b);
     })
 
     it('should honor the "key" property', function() {
