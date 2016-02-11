@@ -39,7 +39,26 @@ class CustomComponent extends Component {
 };
 ```
 
-### Options
+### API
+
+##### As a decorator
+```js
+@mouseAware(options)
+export default class Test extends React.Component {
+    /* your code */
+}
+```
+
+##### As a function
+
+```js
+class Test extends React.Component {
+    /* your code */
+}
+
+export default mouseAware(options)(Test);
+```
+#### Options
 
 ##### `inDelay` defaults to `0`
 Time in `ms` to wait before setting the `active` status to `true`.
