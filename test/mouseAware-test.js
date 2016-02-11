@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-addons-test-utils';
 import { mouseAware } from '../src/mouseAware';
 
 describe('mouseAware decorator', function() {
@@ -47,42 +47,112 @@ describe('mouseAware component factory', function() {
 describe('mouseAware Component', function() {
 
     class _Test extends React.Component {
-        render() { return <div {...this.props} />; }
+        render() {
+            props = this.props;
+            return <div {...this.props} />;
+        }
     }
 
-    let renderer = null;
+    let props = null;
     beforeEach(function() {
-        renderer = ReactTestUtils.createRenderer();
+        props = null;
     });
 
     it('should use the default options if none are provided', function() {
-
         const Test = mouseAware()(_Test);
-        renderer.render(<Test />);
-        const result = renderer.getRenderOutput();
+        TestUtils.renderIntoDocument(<Test />);
 
-        expect(result.props.isOver).to.exist;
-        expect(result.props.onMouseEnter).to.be.instanceOf(Function);
-        expect(result.props.onMouseLeave).to.be.instanceOf(Function);
+        // has default property names
+        expect(props.isOver).to.exist;
+        expect(props.onMouseEnter).to.be.instanceOf(Function);
+        expect(props.onMouseLeave).to.be.instanceOf(Function);
+
+        // starts inactive
+        expect(props.isOver).to.be.false;
+
+        // syncronously becomes active
+        props.onMouseEnter();
+        expect(props.isOver).to.be.true;
+
+        // syncronously becomes inactive
+        props.onMouseLeave();
+        expect(props.isOver).to.be.false;
     });
 
-    describe('using the "inDelay" option', function() {
+    it('should honor the "inDelay" option', function(done) {
+        const Test = mouseAware({ inDelay: 100 })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
 
+        // starts inactive
+        expect(props.isOver).to.be.false;
+
+        // asynchronously becomes active
+        props.onMouseEnter();
+        expect(props.isOver).to.be.false;
+        setTimeout(function() {
+            expect(props.isOver).to.be.true;
+            done();
+        }, 300);
     });
 
-    describe('using the "outDelay" option', function() {
+    it('should honor the "outDelay" option', function(done) {
+        const Test = mouseAware({ outDelay: 100 })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
 
+        // starts inactive
+        expect(props.isOver).to.be.false;
+
+        // syncronously becomes active
+        props.onMouseEnter();
+        expect(props.isOver).to.be.true;
+
+        // asynchronously becomes inactive
+        props.onMouseLeave();
+        expect(props.isOver).to.be.true;
+        setTimeout(function() {
+            expect(props.isOver).to.be.false;
+            done();
+        }, 300);
     });
 
-    describe('using the "inHandler" option', function() {
+    it('should honor the "inHandler" property', function() {
+        const Test = mouseAware({ inHandler: 'foo' })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
 
+        expect(props.foo).to.be.instanceOf(Function);
+        expect(props.onMouseEnter).to.be.undefined;
     });
 
-    describe('using the "outHandler" option', function() {
-
+    it('should allow name collisions of "inHandler" property name', function() {
+        const Test = mouseAware()(_Test);
+        const spy = sinon.spy();
+        TestUtils.renderIntoDocument(<Test onMouseEnter={spy} />);
+        props.onMouseEnter();
+        expect(spy).to.be.called;
+        expect(props.isOver).to.be.true;
     });
 
-    describe('using the "key" option', function() {
+    it('should honor the "outHandler" property', function() {
+        const Test = mouseAware({ outHandler: 'foo' })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
 
+        expect(props.foo).to.be.instanceOf(Function);
+        expect(props.onMouseLeave).to.be.undefined;
+    });
+
+    it('should allow name collisions of "outHandler" property name', function() {
+        const Test = mouseAware()(_Test);
+        const spy = sinon.spy();
+        TestUtils.renderIntoDocument(<Test onMouseLeave={spy} />);
+        props.onMouseLeave();
+        expect(spy).to.be.called;
+    })
+
+    it('should honor the "key" property', function() {
+        const Test = mouseAware({ key: 'foo' })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
+
+        expect(props.foo).to.be.false;
+        expect(props.isOver).to.be.undefined;
     });
 });
