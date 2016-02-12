@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/azuqua/react-mouse-aware"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/azuqua/react-mouse-aware/issues"
   },
   "keywords": [
     "react",

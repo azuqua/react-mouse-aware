@@ -1,4 +1,4 @@
-# react-mouseAware
+# react-mouse-aware
 
 A tiny higher order component to track mouse state.
 
@@ -33,7 +33,7 @@ class CustomComponent extends Component {
         return (
             <div {...props} className={className}>
 
-            </diV>
+            </div>
         )
     }
 };
