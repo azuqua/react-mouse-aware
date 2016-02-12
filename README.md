@@ -1,11 +1,11 @@
 # react-mouseAware
 
-A tiny decorator to track mouse state on a component.
+A tiny higher order component to track mouse state.
 
 ### Example
 ```js
 import { Component } from 'react';
-import { mouseAware } from 'react-mouseAware';
+import { mouseAware } from 'react-mouse-aware';
 
 @mouseAware({ // same as default options
     inDelay: 0,
