@@ -1,4 +1,4 @@
-# react-mouse-aware
+# react-mouse-aware [![Build Status](https://travis-ci.org/azuqua/react-mouse-aware.svg?branch=master)](https://travis-ci.org/azuqua/react-mouse-aware)
 
 A tiny higher order component to track mouse state.
 
