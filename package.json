@@ -4,7 +4,15 @@
   "description": "A tiny higher order component to track mouse state.",
   "main": "./lib",
   "scripts": {
-    "test": "./scripts/test.sh"
+    "build": "rm -rf lib && babel src --out-dir lib",
+    "lint": "eslint src",
+    "pretest": "npm run lint",
+    "test": "mocha test",
+    "prepublish": "in-publish && npm run test && npm run build || not-in-publish",
+    "publish:major": "npm version major && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:patch": "npm version patch && npm publish",
+    "postpublish": "git push origin master --tags"
   },
   "repository": {
     "type": "git",
@@ -43,6 +51,7 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
+    "in-publish": "^2.0.0",
     "jsdom": "^3.1.2",
     "mocha": "^2.4.5",
     "react": "^0.14.7",
