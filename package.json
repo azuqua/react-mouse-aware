@@ -2,7 +2,7 @@
   "name": "react-mouse-aware",
   "version": "0.1.0",
   "description": "A tiny higher order component to track mouse state.",
-  "main": "index.js",
+  "main": "./lib",
   "scripts": {
     "test": "./scripts/test.sh"
   },
