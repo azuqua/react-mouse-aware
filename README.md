@@ -72,5 +72,13 @@ Property name to expose the `inHandler` as.
 ##### `outHandler` defaults to `'onMouseLeave'`
 Property name to expose the `outHandler` as.
 
+##### `openFunction` no default
+Property name to expose the force open function as.
+This function will ignore the in delay
+
+##### `closeFunction` no default
+Property name to expose the force close function as.
+This function will ignore the out delay.
+
 ##### `key` defaults to `'isOver'`
 Property name to expose the `active` status as.

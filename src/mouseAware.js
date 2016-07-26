@@ -7,6 +7,8 @@ export const mouseAware = ({
     outDelay = 0,
     inHandler = 'onMouseEnter',
     outHandler = 'onMouseLeave',
+    openFunction = 'forceOpen',
+    closeFunction = 'forceClose',
     key = 'isOver',
 } = {}) => (OriginalComponent) => {
     // create higher order component to track state
@@ -30,15 +32,10 @@ export const mouseAware = ({
             if (this.props[inHandler]) this.props[inHandler](...args);
             if (this.timeout) clearTimeout(this.timeout);
 
-            const commit = () => {
-                this.timeout = null;
-                this.setState({ active: true });
-            };
-
             if (inDelay) {
-                this.timeout = setTimeout(commit, inDelay);
+                this.timeout = setTimeout(this.open, inDelay);
             } else {
-                commit();
+                this.open();
             }
         };
 
@@ -46,16 +43,27 @@ export const mouseAware = ({
             if (this.props[outHandler]) this.props[outHandler](...args);
             if (this.timeout) clearTimeout(this.timeout);
 
-            const commit = () => {
-                this.timeout = null;
-                this.setState({ active: false });
-            };
-
             if (outDelay) {
-                this.timeout = setTimeout(commit, outDelay);
+                this.timeout = setTimeout(this.close, outDelay);
             } else {
-                commit();
+                this.close();
             }
+        };
+
+        open = () => {
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+                this.timeout = null;
+            }
+            if (!this.state.active) this.setState({ active: true });
+        };
+
+        close = () => {
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+                this.timeout = null;
+            }
+            if (this.state.active) this.setState({ active: false });
         };
 
         render() {
@@ -65,6 +73,9 @@ export const mouseAware = ({
                 [inHandler]: this.onEnter,
                 [outHandler]: this.onLeave,
             };
+
+            if (openFunction) props[openFunction] = this.open;
+            if (closeFunction) props[closeFunction] = this.close;
 
             return createElement(OriginalComponent, props);
         }

@@ -148,7 +148,19 @@ describe('mouseAware Component', function() {
         TestUtils.renderIntoDocument(<Test onMouseLeave={spy} />);
         props.onMouseLeave(a, b);
         expect(spy).to.be.calledWith(a, b);
-    })
+    });
+
+    it('should honor the "openFunction" property', function() {
+        const Test = mouseAware({ openFunction: 'foo' })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
+        expect(props.foo).to.be.instanceOf(Function);
+    });
+
+    it('should honor the "closeFunction" property', function() {
+        const Test = mouseAware({ closeFunction: 'foo' })(_Test);
+        TestUtils.renderIntoDocument(<Test />);
+        expect(props.foo).to.be.instanceOf(Function);
+    });
 
     it('should honor the "key" property', function() {
         const Test = mouseAware({ key: 'foo' })(_Test);
